@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"net/http"
@@ -6,7 +6,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// event strcture
 type Event struct {
 	ID          string `json:"id"`
 	Title       string `json:"title"`
@@ -15,7 +14,6 @@ type Event struct {
 	Status      string `json:"status"`
 }
 
-// ticket strctre
 type Ticket struct {
 	ID      string `json:"id"`
 	EventID string `json:"event_id"`
@@ -23,63 +21,53 @@ type Ticket struct {
 	Code    string `json:"code"`
 }
 
-// handler(definef ahead)
-type EventHandler struct {
-}
+type EventHandler struct{}
 
 func RegisterRoutes(router *mux.Router, handler *EventHandler) {
-	//create event
 	router.HandleFunc("/api/events", handler.CreateEvent).
 		Methods(http.MethodPost).
 		Name("CreateEvent")
-
-	//event by id
 	router.HandleFunc("/api/events/{id}", handler.GetEventByID).
 		Methods(http.MethodGet).
 		Name("GetEventByID")
-
-	//get all event
 	router.HandleFunc("/api/events", handler.GetAllEvents).
 		Methods(http.MethodGet).
 		Name("GetAllEvents")
-
-	//arequest
 	router.HandleFunc("/api/events/{id}/approve", handler.ApproveRequest).
 		Methods(http.MethodPut).
 		Name("ApproveRequest")
-
-	// rrequest
 	router.HandleFunc("/api/events/{id}/reject", handler.RejectRequest).
 		Methods(http.MethodPut).
 		Name("RejectRequest")
-
-	//  ticketg
 	router.HandleFunc("/api/events/{id}/tickets", handler.GenerateTicket).
 		Methods(http.MethodPost).
 		Name("GenerateTicket")
 }
 
-// handler funs
-func (h *EventHandler) CreateEvent(w http.ResponseWriter, r *http.Request) {}
+func (h *EventHandler) CreateEvent(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Create Event endpoint\n"))
+}
 
 func (h *EventHandler) GetEventByID(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	w.Write([]byte("Get Event by ID endpoint\n"))
 }
+
 func (h *EventHandler) GetAllEvents(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Get All Events endpoint\n"))
 }
+
 func (h *EventHandler) ApproveRequest(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	w.Write([]byte("Approve Request endpoint\n"))
 }
+
 func (h *EventHandler) RejectRequest(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	w.Write([]byte("Reject Request endpoint\n"))
 }
+
 func (h *EventHandler) GenerateTicket(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	w.Write([]byte("Generate Ticket endpoint\n"))
 }
+
 func main() {
 	router := mux.NewRouter()
 	handler := &EventHandler{}
